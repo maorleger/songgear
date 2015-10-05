@@ -1,0 +1,12 @@
+{% extends "web/base.html" %}
+{% load embed_video_tags %}
+{% block content %}
+    <div class="row">
+        <a class="btn btn-default" href="{% url 'web:edit' pk=song.id %}">Edit</a>
+    </div>
+    {% if song.video %}
+        <div class="embed-responsive embed-responsive-16by9">
+            {% video song.video 'small' %}
+        </div>
+    {% endif %}
+{% endblock content %}
