@@ -32,6 +32,4 @@ def edit(request, pk):
         return HttpResponseRedirect(reverse('web:detail', args=(song.id,)))
     else:
         form = EditForm(instance=song)
-        print('we get')
-        print(song.id)
     return render(request, 'web/edit.html', {'form': form, 'pk': pk})
