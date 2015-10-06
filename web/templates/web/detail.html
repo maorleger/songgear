@@ -11,15 +11,43 @@
         </h1>
      </div>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <p>Video:</p>
             {% if song.video %}
                 <div class="embed-responsive embed-responsive-16by9">
                     {% video song.video 'small' %}
                 </div>
+            {% else %}
+                <p>There is no link for the lesson video. Add one!</p>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <p>Lesson video:</p>
+            {% if song.lesson_video %}
+                <div class="embed-responsive embed-responsive-16by9">
+                    {% video song.lesson_video 'small' %}
+                </div>
+            {% else %}
+                <p>There is no link for the lesson video. Add one!</p>
             {% endif %}
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            {% if song.chords_url %}
+                <p>Link to chords: <a href="{{ song.chords_url }}" target="_blank">{{ song.chords_url }}</a></p>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+             {% if song.tabs_url %}
+                <p>Link to tabs: <a href="{{ song.tabs_url }}" target="_blank">{{ song.tabs_url }}</a></p>
+            {% endif %}
+        </div>
+
+
+
+    </div>
+
     <div class="row">
         <p>Tabs (text):</p>
         <pre>{{ song.tabs_text }}</pre>

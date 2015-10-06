@@ -6,4 +6,4 @@ class EditForm(ModelForm):
 
     class Meta:
         model = Song
-        fields = ('name', 'artist', 'video', 'chords_text', 'chords_url', 'tabs_text', 'tabs_url')
+        fields = ('name', 'artist', 'video', 'lesson_video', 'chords_text', 'chords_url', 'tabs_text', 'tabs_url')
