@@ -8,8 +8,8 @@ class Artist(models.Model):
         return self.name
 
 class Song(models.Model):
-    name = models.CharField(max_length=200)
-    artist = models.ForeignKey(Artist)
+    name = models.CharField(max_length=200, blank=False, null=False)
+    artist = models.ForeignKey(Artist, blank=False, null=False)
     video = models.URLField(null=True, blank=True)
     chords_text = models.TextField(null=True, blank=True)
     chords_url = models.URLField(null=True, blank=True)

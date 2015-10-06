@@ -29,7 +29,7 @@ def edit(request, pk):
         form = EditForm(request.POST, instance=song)
         if form.is_valid():
             song = form.save()
-        return HttpResponseRedirect(reverse('web:detail', args=(song.id,)))
+            return HttpResponseRedirect(reverse('web:detail', args=(song.id,)))
     else:
         form = EditForm(instance=song)
     return render(request, 'web/edit.html', {'form': form, 'pk': pk})
