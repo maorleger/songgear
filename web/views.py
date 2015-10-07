@@ -47,14 +47,13 @@ class SongListVIew(generic.ListView):
 def songs(request, **kwargs):
     songs = Song.objects.all().order_by('name')
 
-    if request.POST:
-        # return a filtered list based on search pattern
-        try:
-            search_term = request.POST['search']
-        except KeyError:
-            search_term = ""
+    # return a filtered list based on search pattern
+    try:
+        search_term = request.GET['search']
+    except KeyError:
+        search_term = ""
 
-        q = Q(name__icontains=search_term) | Q(artist__name__icontains=search_term)
-        songs = songs.filter(q).order_by('name')
+    q = Q(name__icontains=search_term) | Q(artist__name__icontains=search_term)
+    songs = songs.filter(q).order_by('name')
 
     return render(request, 'web/songs.html', {'song_list': songs})
