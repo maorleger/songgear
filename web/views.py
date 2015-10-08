@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views import generic
 from django.core.urlresolvers import reverse
@@ -6,9 +7,13 @@ from .forms import EditForm
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.db.models import Q
+from django.utils.decorators import method_decorator
 
 
-
+class LoggedInMixin(object):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(LoggedInMixin, self).dispatch(*args, **kwargs)
 
 
 class IndexView(generic.ListView):
@@ -19,11 +24,12 @@ class IndexView(generic.ListView):
         return Song.objects.order_by('name')
 
 
-class DetailView(generic.DetailView):
+class DetailView(LoggedInMixin, generic.DetailView):
     template_name = 'web/detail.html'
     model = Song
 
 
+@login_required
 def edit(request, pk):
     song = get_object_or_404(Song, pk=pk)
     if request.method == 'POST':
@@ -36,15 +42,16 @@ def edit(request, pk):
     return render(request, 'web/edit.html', {'form': form, 'pk': pk})
 
 
-class SongListVIew(generic.ListView):
+class SongListVIew(LoggedInMixin, generic.ListView):
     template_name = 'web/songs.html'
     context_object_name = 'song_list'
 
     def get_queryset(self):
-
         return Song.objects.order_by('name')
 
-def songs(request, **kwargs):
+
+@login_required
+def songs(request):
     songs = Song.objects.all().order_by('name')
 
     # return a filtered list based on search pattern

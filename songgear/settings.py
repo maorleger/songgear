@@ -111,3 +111,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+
+# User management specific settings.
+# TODO: seems like they should live in the web app, but maybe the point is that one app manages users?
+LOGIN_REDIRECT_URL = 'web:index'
+
+LOGIN_URL = 'django.contrib.auth.views.login'
