@@ -41,9 +41,9 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         {% if user.is_anonymous %}
-                            <li><a class="btn " href="{% url 'web:login' %}" >login</a></li>
+                            <li class="{% active_page request "web:login" %}"><a class="btn " href="{% url 'web:login' %}" >login</a></li>
                         {% else %}
-                            <li>
+                            <li class="hidden-xs">
                                 <form class="navbar-form navbar-left pull-right" role="search" action="{% url "web:songs" %}" method="GET">
 
                                     <div class="form-group">
