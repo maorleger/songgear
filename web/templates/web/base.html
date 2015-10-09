@@ -30,7 +30,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{% url "web:index" %}">SongGear</a>
+                <a class="navbar-brand" href="{% url "web:index" %}">{% if False == user.is_anonymous  %}{{ user.first_name }}'s {% endif %}SongGear</a>
             </div>
 
             <div class="collapse navbar-collapse" id="navbar-collapse">
@@ -42,6 +42,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         {% if user.is_anonymous %}
                             <li class="{% active_page request "web:login" %}"><a class="btn " href="{% url 'web:login' %}" >login</a></li>
+                            <li class="{% active_page request "web:register" %}"><a class="btn" href="{% url 'web:register' %}">Register</a></li>
                         {% else %}
                             <li class="hidden-xs">
                                 <form class="navbar-form navbar-left pull-right" role="search" action="{% url "web:songs" %}" method="GET">
@@ -49,7 +50,7 @@
                                     <div class="form-group">
                                         <input type="text" class="form-control" placeholder="Search" name="search" id="search">
                                     </div>
-                                    <button type="submit" class="btn btn-default">Submit</button>
+                                    <button type="submit" class="btn btn-default">Search</button>
                                 </form>
                             </li>
                             <li><a href="{% url 'web:logout' %}" class="btn green">logout</a></li>

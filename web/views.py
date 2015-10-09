@@ -1,9 +1,10 @@
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views import generic
 from django.core.urlresolvers import reverse
 from .models import Song
-from .forms import EditForm
+from .forms import EditForm, RegisterForm
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.db.models import Q
@@ -64,3 +65,16 @@ def songs(request):
     songs = songs.filter(q).order_by('name')
 
     return render(request, 'web/songs.html', {'song_list': songs})
+
+
+def register(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user = authenticate(username=request.POST['username'], password=request.POST['password'])
+            login(request, user)
+            return HttpResponseRedirect(reverse('web:index'))
+    else:
+        form = RegisterForm()
+    return render(request, 'web/register.html', {'form': form})
