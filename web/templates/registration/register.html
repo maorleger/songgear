@@ -2,14 +2,10 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
-       <form method="post" action="{% url 'web:register' %}">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <button type="submit"  class="btn btn-success">Register!</button>
-        </form>
+{% crispy form %}
 
 
-        <p>Or if you are already registered you may <a class="btn btn-success" href="{% url 'web:login' %}">Login</a></p>
+
+<p>Or if you are already registered you may <a class="btn btn-success" href="{% url 'web:login' %}">Login</a></p>
 
 {% endblock content %}

@@ -16,8 +16,7 @@ class NewEditForm(ModelForm):
             self.helper.form_action = reverse('web:edit', args=(kwargs['instance'].id,))
         except KeyError:
             self.helper.form_action = reverse('web:new')
-        # self.helper.form_action = reverse('web:detail', args=(Song.id,))
-        self.helper.add_input(Submit('submit', 'submit', css_class='btn btn-success'))
+        self.helper.add_input(Submit('submit', 'submit', css_class='btn-success'))
 
     class Meta:
         model = Song
@@ -33,6 +32,13 @@ class RegisterForm(ModelForm):
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
         self.fields['email'].required = True
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_action = reverse('web:register')
+
+        self.helper.add_input(Submit('register', 'Register!', css_class='btn-success'))
+
 
 
     class Meta:
