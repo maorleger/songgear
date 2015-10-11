@@ -81,6 +81,8 @@ def songs(request):
     q = Q(name__icontains=search_term) | Q(artist__name__icontains=search_term)
     songs = songs.filter(q).order_by('artist__name', 'name')
 
+    if len(songs) == 1:
+        return render(request, 'web/detail.html', {'song': songs[0]})
     return render(request, 'web/songs.html', {'song_list': songs})
 
 
