@@ -9,7 +9,6 @@ def active_page(request, view_name):
 
     from django.core.urlresolvers import resolve, Resolver404
     path = resolve(request.path_info)
-    print (view_name, "{0}:{1}".format(path.namespace, path.url_name))
     if not request:
         return ""
     try:

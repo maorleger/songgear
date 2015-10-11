@@ -1,7 +1,8 @@
 {% extends "web/base.html" %}
+{% load crispy_forms_tags %}
+
 {% block content %}
-    <div class="jumbotron">
-        <p>{% lorem %}</p>
-    </div>
+
+    {% crispy form %}
 
 {% endblock content %}

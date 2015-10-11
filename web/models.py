@@ -3,7 +3,7 @@ from django.forms import ModelForm
 
 
 class Artist(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
 
     def __str__(self):
         return self.name
@@ -22,4 +22,7 @@ class Song(models.Model):
 
     def __str__(self):
         return "{0} by {1}".format(self.name, self.artist.name)
+
+    class Meta:
+        unique_together = ('artist', 'name')
 

@@ -1,12 +1,48 @@
 {% extends "web/base.html" %}
 {% block content %}
     <div class="row">
-        <ul>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            <a href="{% url 'web:new' %}"><span class="glyphicon glyphicon-plus"></span></a>
+                            Song ID
+                        </th>
+                        <th>Artist</th>
+                        <th>Name</th>
 
-            {% for song in song_list %}
-                <li><a href={% url  'web:detail' song.id %}>{{ song.name }} by {{ song.artist.name }}</a></li>
-            {% endfor %}
-        </ul>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for song in song_list %}
+                        <tr>
+                            <td>
+                                <a href={% url 'web:detail' song.id %}>
+                                    <span class="glyphicon glyphicon-eye-open text-center" aria-hidden="false">
+{#                                        <br/>#}
+{#                                        <span class="glyphicon-class">View</span>#}
+                                    </span>
+                                </a>
+                                <a href="{% url 'web:edit' song.id %}">
+                                    <span class="glyphicon glyphicon-pencil text-center">
+{#                                        <br/>#}
+{#                                        <span class="glyphicon-class">Edit</span>#}
+                                    </span>
+                                </a>
+                                <a href="{% url 'web:delete' song.id %}">
+                                    <span class="glyphicon glyphicon-remove text-center">
+
+                                    </span>
+                                </a>
+                            </td>
+                            <td>{{ song.artist.name }}</td>
+                            <td>{{ song.name }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
 

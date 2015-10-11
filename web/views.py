@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views import generic
 from django.core.urlresolvers import reverse
 from .models import Song
-from .forms import EditForm, RegisterForm
+from .forms import NewEditForm, RegisterForm
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.db.models import Q
@@ -31,16 +31,33 @@ class DetailView(LoggedInMixin, generic.DetailView):
 
 
 @login_required
+def delete(request, pk):
+    song = get_object_or_404(Song, pk=pk)
+    song.delete()
+    return HttpResponseRedirect(reverse('web:songs'))
+
+@login_required
 def edit(request, pk):
     song = get_object_or_404(Song, pk=pk)
     if request.method == 'POST':
-        form = EditForm(request.POST, instance=song)
+        form = NewEditForm(request.POST, instance=song)
         if form.is_valid():
             song = form.save()
             return HttpResponseRedirect(reverse('web:detail', args=(song.id,)))
     else:
-        form = EditForm(instance=song)
+        form = NewEditForm(instance=song)
     return render(request, 'web/edit.html', {'form': form, 'pk': pk})
+
+@login_required
+def new(request):
+    if request.method == 'POST':
+        form = NewEditForm(request.POST)
+        if form.is_valid():
+            song = form.save()
+            return HttpResponseRedirect(reverse('web:detail', args=(song.id,)))
+    else:
+        form = NewEditForm()
+    return render(request, 'web/new.html', {'form' : form})
 
 
 class SongListVIew(LoggedInMixin, generic.ListView):
@@ -62,7 +79,7 @@ def songs(request):
         search_term = ""
 
     q = Q(name__icontains=search_term) | Q(artist__name__icontains=search_term)
-    songs = songs.filter(q).order_by('name')
+    songs = songs.filter(q).order_by('artist__name', 'name')
 
     return render(request, 'web/songs.html', {'song_list': songs})
 
