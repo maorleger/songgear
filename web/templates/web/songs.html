@@ -9,7 +9,10 @@
                             <a href="{% url 'web:new' %}"><span class="glyphicon glyphicon-plus"></span></a>
                             Song ID
                         </th>
-                        <th>Artist</th>
+                        <th>
+                            <a href="{% url 'web:new_artist' %}"><span class="glyphicon glyphicon-plus"></span></a>
+                            Artist
+                        </th>
                         <th>Name</th>
 
                     </tr>
@@ -36,7 +39,12 @@
                                     </span>
                                 </a>
                             </td>
-                            <td>{{ song.artist.name }}</td>
+                            <td>
+                                <a href="{% url 'web:edit_artist' song.artist.id %}">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </a>
+                                {{ song.artist.name }}
+                            </td>
                             <td>{{ song.name }}</td>
                         </tr>
                     {% endfor %}

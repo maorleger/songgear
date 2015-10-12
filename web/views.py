@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views import generic
 from django.core.urlresolvers import reverse
-from .models import Song
-from .forms import NewEditForm, RegisterForm
+from .models import Song, Artist
+from .forms import NewEditForm, RegisterForm, ArtistForm
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.db.models import Q
@@ -49,6 +49,18 @@ def edit(request, pk):
     return render(request, 'web/edit.html', {'form': form, 'pk': pk})
 
 @login_required
+def edit_artist(request, pk):
+    artist = get_object_or_404(Artist, pk=pk)
+    if request.method == 'POST':
+        form = ArtistForm(request.POST, instance=artist)
+        if form.is_valid():
+            artist = form.save()
+            return HttpResponseRedirect(reverse('web:songs'))
+    else:
+        form = ArtistForm(instance=artist)
+    return render(request, 'web/edit.html', {'form' : form, 'pk': pk})
+
+@login_required
 def new(request):
     if request.method == 'POST':
         form = NewEditForm(request.POST)
@@ -59,6 +71,16 @@ def new(request):
         form = NewEditForm()
     return render(request, 'web/new.html', {'form' : form})
 
+@login_required
+def new_artist(request):
+    if request.method == 'POST':
+        form = ArtistForm(request.POST)
+        if form.is_valid():
+            artist = form.save()
+            return HttpResponseRedirect(reverse('web:songs'))
+    else:
+        form = ArtistForm()
+    return render(request, 'web/new.html', {'form': form})
 
 class SongListVIew(LoggedInMixin, generic.ListView):
     template_name = 'web/songs.html'
@@ -97,3 +119,4 @@ def register(request):
     else:
         form = RegisterForm()
     return render(request, 'registration/register.html', {'form': form})
+

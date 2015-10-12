@@ -1,13 +1,30 @@
 from django.core.urlresolvers import reverse
-from django.forms import ModelForm
-from .models import Song
+from django.forms import ModelForm, CharField
+from .models import Song, Artist
 from django.contrib.auth.models import User
 from crispy_forms.layout import Submit
 from crispy_forms.helper import FormHelper
 
 
-class NewEditForm(ModelForm):
+class ArtistForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ArtistForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        try:
+            self.helper.form_action = reverse('web:edit_artist', args=(kwargs['instance'].id,))
+        except KeyError:
+            self.helper.form_action = reverse('web:new_artist')
+        self.helper.add_input(Submit('submit', 'submit', css_class='btn-success'))
 
+    class Meta:
+        model = Artist
+        fields = ('name',)
+
+
+
+
+class NewEditForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(NewEditForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
