@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views import generic
 from django.core.urlresolvers import reverse
 from .models import Song, Artist
-from .forms import NewEditForm, RegisterForm, ArtistForm
+from .forms import SongForm, RegisterForm, ArtistForm
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.db.models import Q
@@ -36,17 +36,19 @@ def delete(request, pk):
     song.delete()
     return HttpResponseRedirect(reverse('web:songs'))
 
+
 @login_required
 def edit(request, pk):
     song = get_object_or_404(Song, pk=pk)
     if request.method == 'POST':
-        form = NewEditForm(request.POST, instance=song)
+        form = SongForm(request.POST, instance=song)
         if form.is_valid():
             song = form.save()
             return HttpResponseRedirect(reverse('web:detail', args=(song.id,)))
     else:
-        form = NewEditForm(instance=song)
+        form = SongForm(instance=song)
     return render(request, 'web/edit.html', {'form': form, 'pk': pk})
+
 
 @login_required
 def edit_artist(request, pk):
@@ -58,18 +60,20 @@ def edit_artist(request, pk):
             return HttpResponseRedirect(reverse('web:songs'))
     else:
         form = ArtistForm(instance=artist)
-    return render(request, 'web/edit.html', {'form' : form, 'pk': pk})
+    return render(request, 'web/edit.html', {'form': form, 'pk': pk})
+
 
 @login_required
 def new(request):
     if request.method == 'POST':
-        form = NewEditForm(request.POST)
+        form = SongForm(request.POST)
         if form.is_valid():
             song = form.save()
             return HttpResponseRedirect(reverse('web:detail', args=(song.id,)))
     else:
-        form = NewEditForm()
-    return render(request, 'web/new.html', {'form' : form})
+        form = SongForm()
+    return render(request, 'web/new.html', {'form': form})
+
 
 @login_required
 def new_artist(request):
@@ -82,12 +86,19 @@ def new_artist(request):
         form = ArtistForm()
     return render(request, 'web/new.html', {'form': form})
 
+
 class SongListVIew(LoggedInMixin, generic.ListView):
     template_name = 'web/songs.html'
     context_object_name = 'song_list'
 
     def get_queryset(self):
         return Song.objects.order_by('name')
+
+
+@login_required
+def artists(request):
+    artists = Artist.objects.all().order_by('name')
+    return render(request, 'web/artists.html', {'artist_list': artists})
 
 
 @login_required
@@ -119,4 +130,3 @@ def register(request):
     else:
         form = RegisterForm()
     return render(request, 'registration/register.html', {'form': form})
-

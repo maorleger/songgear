@@ -16,17 +16,14 @@ class ArtistForm(ModelForm):
         except KeyError:
             self.helper.form_action = reverse('web:new_artist')
         self.helper.add_input(Submit('submit', 'submit', css_class='btn-success'))
-
     class Meta:
         model = Artist
         fields = ('name',)
 
 
-
-
-class NewEditForm(ModelForm):
+class SongForm(ModelForm):
     def __init__(self, *args, **kwargs):
-        super(NewEditForm, self).__init__(*args, **kwargs)
+        super(SongForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         try:
@@ -38,8 +35,6 @@ class NewEditForm(ModelForm):
     class Meta:
         model = Song
         fields = ('name', 'artist', 'video', 'lesson_video', 'chords_text', 'chords_url', 'tabs_text', 'tabs_url')
-
-
 
 
 class RegisterForm(ModelForm):
@@ -56,8 +51,6 @@ class RegisterForm(ModelForm):
 
         self.helper.add_input(Submit('register', 'Register!', css_class='btn-success'))
 
-
-
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password')
@@ -68,5 +61,3 @@ class RegisterForm(ModelForm):
         if commit:
             user.save()
         return user
-
-
