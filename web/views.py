@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views import generic
 from django.core.urlresolvers import reverse
 from .models import Song, Artist
-from .forms import SongForm, RegisterForm, ArtistForm
+from .forms import SongForm, RegisterForm, ArtistForm, CommentForm
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.db.models import Q
@@ -29,6 +29,20 @@ class DetailView(LoggedInMixin, generic.DetailView):
     template_name = 'web/detail.html'
     model = Song
 
+@login_required
+def detail(request, pk):
+    song = get_object_or_404(Song, pk=pk)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.create_user = request.user
+            comment.song = song
+            comment.save()
+            return HttpResponseRedirect(reverse('web:detail', args=(song.id,)))
+    else:
+        form = CommentForm()
+    return render(request, 'web/detail.html', {'song' : song, 'form' :form})
 
 @login_required
 def delete(request, pk):

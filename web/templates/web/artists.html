@@ -1,7 +1,7 @@
 {% extends "web/base.html" %}
 
 {% block content %}
-    <div class="row">
+
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
@@ -21,10 +21,7 @@
                             <td>
 
                                 <a href="{% url 'web:edit_artist' artist.id %}">
-                                    <span class="glyphicon glyphicon-pencil text-center">
-{#                                        <br/>#}
-{#                                        <span class="glyphicon-class">Edit</span>#}
-                                    </span>
+                                    <span class="glyphicon glyphicon-pencil text-center"></span>
                                 </a>
                                 {{ artist.name }}
                             </td>

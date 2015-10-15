@@ -1,10 +1,16 @@
 from django.core.urlresolvers import reverse
-from django.forms import ModelForm, CharField
-from .models import Song, Artist
+from django.forms import ModelForm, CharField, IntegerField
+from .models import Song, Artist, Comment
 from django.contrib.auth.models import User
 from crispy_forms.layout import Submit
 from crispy_forms.helper import FormHelper
 
+
+class CommentForm(ModelForm):
+
+    class Meta:
+        model = Comment
+        fields = ('comment',)
 
 class ArtistForm(ModelForm):
     def __init__(self, *args, **kwargs):
