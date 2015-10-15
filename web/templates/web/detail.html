@@ -63,6 +63,9 @@
                     <div class="panel-heading">
                         <strong>{{ comment.create_user.username }}</strong>
                         <span class="text-muted">commented {{ comment.create_date }}</span>
+                        {% if comment.create_user == request.user  %}
+                            <a href="{% url 'web:delete_comment' song.id comment.id %}"><span class="pull-right glyphicon glyphicon-remove"></span></a>
+                        {% endif %}
                     </div>
                     <div class="panel-body">
                         {{ comment.comment }}

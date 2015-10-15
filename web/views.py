@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views import generic
 from django.core.urlresolvers import reverse
-from .models import Song, Artist
+from .models import Song, Artist, Comment
 from .forms import SongForm, RegisterForm, ArtistForm, CommentForm
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
@@ -25,10 +25,6 @@ class IndexView(generic.ListView):
         return Song.objects.order_by('name')
 
 
-class DetailView(LoggedInMixin, generic.DetailView):
-    template_name = 'web/detail.html'
-    model = Song
-
 @login_required
 def detail(request, pk):
     song = get_object_or_404(Song, pk=pk)
@@ -49,6 +45,12 @@ def delete(request, pk):
     song = get_object_or_404(Song, pk=pk)
     song.delete()
     return HttpResponseRedirect(reverse('web:songs'))
+
+@login_required
+def delete_comment(request, pk, comment):
+    comment = get_object_or_404(Comment, pk=comment)
+    comment.delete()
+    return HttpResponseRedirect(reverse('web:detail', args=(pk,)))
 
 
 @login_required
