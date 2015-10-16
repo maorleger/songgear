@@ -13,7 +13,7 @@
                             Artist
                         </th>
                         <th>Name</th>
-
+                        <th>Owner</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,22 +26,29 @@
 {#                                        <span class="glyphicon-class">View</span>#}
                                     </span>
                                 </a>
-                                <a href="{% url 'web:edit' song.id %}">
-                                    <span class="glyphicon glyphicon-pencil text-center">
-{#                                        <br/>#}
-{#                                        <span class="glyphicon-class">Edit</span>#}
-                                    </span>
-                                </a>
-                                <a href="{% url 'web:delete' song.id %}">
-                                    <span class="glyphicon glyphicon-remove text-center">
+                                {% if song.create_user == request.user %}
+                                    <a href="{% url 'web:edit' song.id %}">
+                                        <span class="glyphicon glyphicon-pencil text-center">
+    {#                                        <br/>#}
+    {#                                        <span class="glyphicon-class">Edit</span>#}
+                                        </span>
+                                    </a>
+                                    <a href="{% url 'web:delete' song.id %}">
+                                        <span class="glyphicon glyphicon-remove text-center">
 
-                                    </span>
-                                </a>
+                                        </span>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'web:copy' song.id %}">
+                                        <span class="glyphicon glyphicon-copy text-center"></span>
+                                    </a>
+                                {% endif %}
                             </td>
                             <td>
                                 {{ song.artist.name }}
                             </td>
                             <td>{{ song.name }}</td>
+                            <td>{{ song.create_user.username }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

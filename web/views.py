@@ -17,12 +17,8 @@ class LoggedInMixin(object):
         return super(LoggedInMixin, self).dispatch(*args, **kwargs)
 
 
-class IndexView(generic.ListView):
-    template_name = 'web/index.html'
-    context_object_name = 'song_list'
-
-    def get_queryset(self):
-        return Song.objects.order_by('name')
+def index(request):
+    return render(request, 'web/index.html')
 
 
 @login_required
@@ -38,7 +34,8 @@ def detail(request, pk):
             return HttpResponseRedirect(reverse('web:detail', args=(song.id,)))
     else:
         form = CommentForm()
-    return render(request, 'web/detail.html', {'song' : song, 'form' :form})
+    return render(request, 'web/detail.html', {'song': song, 'form': form})
+
 
 @login_required
 def delete(request, pk):
@@ -46,11 +43,30 @@ def delete(request, pk):
     song.delete()
     return HttpResponseRedirect(reverse('web:songs'))
 
+
 @login_required
 def delete_comment(request, pk, comment):
     comment = get_object_or_404(Comment, pk=comment)
     comment.delete()
     return HttpResponseRedirect(reverse('web:detail', args=(pk,)))
+
+
+@login_required
+def copy(request, pk):
+    song = get_object_or_404(Song, pk=pk)
+
+    # try to find my copy of this song first, otherwise create it
+    q = Q(artist=song.artist) & Q(name=song.name) & Q(create_user=request.user)
+    mycopy = Song.objects.filter(q)
+
+    if len(mycopy) == 0:
+        song.pk = None
+        song.create_user = request.user
+        song.save()
+    else:
+        song = mycopy[0]
+
+    return HttpResponseRedirect(reverse('web:detail', args=(song.pk,)))
 
 
 @login_required
@@ -84,7 +100,9 @@ def new(request):
     if request.method == 'POST':
         form = SongForm(request.POST)
         if form.is_valid():
-            song = form.save()
+            song = form.save(commit=False)
+            song.create_user = request.user
+            song.save()
             return HttpResponseRedirect(reverse('web:detail', args=(song.id,)))
     else:
         form = SongForm()
@@ -103,12 +121,6 @@ def new_artist(request):
     return render(request, 'web/new.html', {'form': form})
 
 
-class SongListVIew(LoggedInMixin, generic.ListView):
-    template_name = 'web/songs.html'
-    context_object_name = 'song_list'
-
-    def get_queryset(self):
-        return Song.objects.order_by('name')
 
 
 @login_required
@@ -130,8 +142,10 @@ def songs(request):
     q = Q(name__icontains=search_term) | Q(artist__name__icontains=search_term)
     songs = songs.filter(q).order_by('artist__name', 'name')
 
-    if len(songs) == 1:
-        return render(request, 'web/detail.html', {'song': songs[0]})
+    if search_term != "" and len(songs) == 1:
+        return render(request, 'web/detail.html', {'song' : songs[0]})
+
+
     return render(request, 'web/songs.html', {'song_list': songs})
 
 
@@ -146,3 +160,4 @@ def register(request):
     else:
         form = RegisterForm()
     return render(request, 'registration/register.html', {'form': form})
+

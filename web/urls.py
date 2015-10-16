@@ -4,11 +4,12 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'^$', views.index, name='index'),
     url(r'^songs/$', views.songs, name='songs'),
     url(r'^artists/$', views.artists, name='artists'),
     url(r'^(?P<pk>[0-9]+)/$', views.detail, name='detail'),
     url(r'^(?P<pk>[0-9]+)/edit/$', views.edit, name='edit'),
+    url(r'^(?P<pk>[0-9]+)/copy/$', views.copy, name='copy'),
     url(r'^new/$', views.new, name='new'),
     url(r'^new_artist/$', views.new_artist, name='new_artist'),
     url(r'^(?P<pk>[0-9]+)/edit_artist/$', views.edit_artist, name='edit_artist'),

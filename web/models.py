@@ -21,12 +21,13 @@ class Song(models.Model):
     tabs_url = models.URLField(null=True, blank=True)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
+    create_user = models.ForeignKey(User, blank=False, null=False)
 
     def __str__(self):
         return "{0} by {1}".format(self.name, self.artist.name)
 
     class Meta:
-        unique_together = ('artist', 'name')
+        unique_together = ('artist', 'name', 'create_user')
 
 
 class Comment(models.Model):
