@@ -10,6 +10,9 @@ class Artist(models.Model):
         return self.name
 
 
+class Genre(models.Model):
+    name = models.CharField(max_length=200)
+
 class Song(models.Model):
     name = models.CharField(max_length=200, blank=False, null=False)
     artist = models.ForeignKey(Artist, blank=False, null=False)
@@ -22,6 +25,8 @@ class Song(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
     create_user = models.ForeignKey(User, blank=False, null=False)
+    genre = models.ForeignKey(Genre, blank=True, null=True)
+
 
     def __str__(self):
         return "{0} by {1}".format(self.name, self.artist.name)
