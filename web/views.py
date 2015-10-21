@@ -143,8 +143,7 @@ def songs(request):
     songs = songs.filter(q).order_by('artist__name', 'name')
 
     if search_term != "" and len(songs) == 1:
-        return render(request, 'web/detail.html', {'song' : songs[0]})
-
+        return HttpResponseRedirect(reverse('web:detail', args=(songs[0].id,)))
 
     return render(request, 'web/songs.html', {'song_list': songs})
 

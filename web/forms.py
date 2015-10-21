@@ -12,6 +12,7 @@ class CommentForm(ModelForm):
         model = Comment
         fields = ('comment',)
 
+
 class ArtistForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ArtistForm, self).__init__(*args, **kwargs)
