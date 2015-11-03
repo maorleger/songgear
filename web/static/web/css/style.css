@@ -62,3 +62,12 @@ body {
     border-color: #13264b;
 }
 
+/* Comments */
+.panel-default > .panel-heading  {
+    background-color: #1d4a99;
+
+}
+
+.panel-default > .panel-heading > strong {
+    color: lightgrey;
+}

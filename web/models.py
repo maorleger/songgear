@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.forms import ModelForm
+from embed_video.fields import EmbedVideoField
 
 
 class Artist(models.Model):
@@ -16,8 +16,8 @@ class Genre(models.Model):
 class Song(models.Model):
     name = models.CharField(max_length=200, blank=False, null=False)
     artist = models.ForeignKey(Artist, blank=False, null=False)
-    video = models.URLField(null=True, blank=True)
-    lesson_video = models.URLField(null=True, blank=True)
+    video = EmbedVideoField(null=True, blank=True)
+    lesson_video = EmbedVideoField(null=True, blank=True)
     chords_text = models.TextField(null=True, blank=True)
     chords_url = models.URLField(null=True, blank=True)
     tabs_text = models.TextField(null=True, blank=True)
