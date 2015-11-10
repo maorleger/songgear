@@ -1,8 +1,9 @@
+from crispy_forms.bootstrap import FormActions, FieldWithButtons, StrictButton
 from django.core.urlresolvers import reverse
-from django.forms import ModelForm, CharField, IntegerField
+from django.forms import ModelForm, Form, CharField
 from .models import Song, Artist, Comment
 from django.contrib.auth.models import User
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Submit, Layout, Fieldset, HTML
 from crispy_forms.helper import FormHelper
 
 
@@ -28,16 +29,45 @@ class ArtistForm(ModelForm):
         fields = ('name',)
 
 
+
 class SongForm(ModelForm):
+
     def __init__(self, *args, **kwargs):
         super(SongForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                'genre',
+                'name',
+                FieldWithButtons('artist', StrictButton("Add new", name="toggle_new_artist", id="toggle_new_artist")),
+
+
+                HTML("""<div id="new_artist_div" style="display:none;">
+                        {% csrf_token %}
+                        <input type="text" id="new_artist" name="new_artist" placeholder="Artist name..." class="textinput textInput form-control" maxlength="200" />
+                        <input type="button" name="submit" value="submit" id="add_artist" class="btn btn-primary btn-success"s>
+                        </div>
+                """),
+                'video',
+                "lesson_video",
+                'chords_text',
+                'chords_url',
+                'tabs_text',
+                'tabs_url',
+            ),
+            FormActions(
+                Submit("submit", "submit")
+            )
+        )
+
         try:
             self.helper.form_action = reverse('web:edit', args=(kwargs['instance'].id,))
         except KeyError:
             self.helper.form_action = reverse('web:new')
-        self.helper.add_input(Submit('submit', 'submit', css_class='btn-success'))
+
 
     class Meta:
         model = Song

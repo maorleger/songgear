@@ -1,0 +1,38 @@
+{% extends "web/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    {% crispy form %}
+
+
+
+    <script type="application/javascript">
+        $("document").ready(function(event) {
+
+            $("#toggle_new_artist").click(function(e) {
+                $("#new_artist_div").slideToggle(500);
+            });
+
+            $("#add_artist").click(function(e) {
+
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "{% url "web:new_artist_ajax" %}",
+                    data: $("#new_artist_div > input").serialize()
+
+                }).done(function(event) {
+
+                    var id = event["id"];
+                    var name = event["name"];
+                    if ($("#id_artist").find("option[value=" + id + "]").length == 0) {
+                         var newOption = $('<option value="'+id+'">'+name+'</option>');
+                        $('#id_artist').append(newOption);
+                    }
+                    $("#id_artist").find("option[value=" + id + "]").prop("selected", true);
+                });
+            }) ;
+        });
+
+    </script>
+{% endblock content %}

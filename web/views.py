@@ -1,15 +1,13 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from django.views import generic
 from django.core.urlresolvers import reverse
 from .models import Song, Artist, Comment
 from .forms import SongForm, RegisterForm, ArtistForm, CommentForm
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.db.models import Q
 from django.utils.decorators import method_decorator
-
 
 class LoggedInMixin(object):
     @method_decorator(login_required)
@@ -79,7 +77,7 @@ def edit(request, pk):
             return HttpResponseRedirect(reverse('web:detail', args=(song.id,)))
     else:
         form = SongForm(instance=song)
-    return render(request, 'web/edit.html', {'form': form, 'pk': pk})
+    return render(request, 'web/form.html', {'form': form, 'pk': pk})
 
 
 @login_required
@@ -92,7 +90,7 @@ def edit_artist(request, pk):
             return HttpResponseRedirect(reverse('web:songs'))
     else:
         form = ArtistForm(instance=artist)
-    return render(request, 'web/edit.html', {'form': form, 'pk': pk})
+    return render(request, 'web/form.html', {'form': form, 'pk': pk})
 
 
 @login_required
@@ -106,7 +104,7 @@ def new(request):
             return HttpResponseRedirect(reverse('web:detail', args=(song.id,)))
     else:
         form = SongForm()
-    return render(request, 'web/new.html', {'form': form})
+    return render(request, 'web/form.html', {'form': form})
 
 
 @login_required
@@ -120,7 +118,18 @@ def new_artist(request):
         form = ArtistForm()
     return render(request, 'web/new.html', {'form': form})
 
+@login_required
+def new_artist_ajax(request):
+    if request.method == 'POST':
+        artist_name = request.POST['new_artist']
+        artist = Artist.objects.all().filter(name=artist_name)
 
+        if artist.count() == 1:
+            artist = artist[0]
+        else:
+            artist = Artist.objects.create(name=artist_name)
+
+        return JsonResponse({"id": artist.id, "name": artist.name})
 
 
 @login_required
