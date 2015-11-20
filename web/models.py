@@ -13,9 +13,12 @@ class Artist(models.Model):
 class Genre(models.Model):
     name = models.CharField(max_length=200)
 
+    def __str__(self):
+        return self.name
+
 class Song(models.Model):
     name = models.CharField(max_length=200, blank=False, null=False)
-    artist = models.ForeignKey(Artist, blank=True, null=False)
+    artist = models.ForeignKey(Artist, blank=False, null=False)
     video = EmbedVideoField(null=True, blank=True)
     lesson_video = EmbedVideoField(null=True, blank=True)
     chords_text = models.TextField(null=True, blank=True)

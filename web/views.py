@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
-from .models import Song, Artist, Comment
+from .models import Song, Artist, Comment, Genre
 from .forms import SongForm, RegisterForm, ArtistForm, CommentForm
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, JsonResponse
@@ -131,6 +131,19 @@ def new_artist_ajax(request):
 
         return JsonResponse({"id": artist.id, "name": artist.name})
 
+
+@login_required
+def new_genre_ajax(request):
+    if request.method == 'POST':
+        genre_name = request.POST['new_genre']
+        genre = Genre.objects.all().filter(name=genre_name)
+
+        if genre.count() == 1:
+            genre = genre[0]
+        else:
+            genre = Genre.objects.create(name=genre_name)
+
+        return JsonResponse({"id": genre.id, "name": genre.name})
 
 @login_required
 def artists(request):

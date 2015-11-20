@@ -40,15 +40,21 @@ class SongForm(ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 '',
-                'genre',
+                FieldWithButtons ('genre', StrictButton("Add new", name="toggle_new_genre", css_class="toggleButton", data_div_id="new_genre_div")),
+                HTML("""<div id="new_genre_div" style="display:none;" class="input-group">
+                        {% csrf_token %}
+                        <input type="text" id="new_genre" name="new_genre" placeholder="Genre..." class="textinput textInput form-control" maxlength="200" />
+                        <span class="input-group-btn"><input type="button" name="submit" value="submit" id="add_genre" class="btn btn-primary btn-success"></span>
+                        </div>
+                """),
                 'name',
-                FieldWithButtons('artist', StrictButton("Add new", name="toggle_new_artist", id="toggle_new_artist")),
+                FieldWithButtons('artist', StrictButton("Add new", name="toggle_new_artist" , css_class="toggleButton", data_div_id="new_artist_div")),
 
 
-                HTML("""<div id="new_artist_div" style="display:none;">
+                HTML("""<div id="new_artist_div" style="display:none;" class="input-group">
                         {% csrf_token %}
                         <input type="text" id="new_artist" name="new_artist" placeholder="Artist name..." class="textinput textInput form-control" maxlength="200" />
-                        <input type="button" name="submit" value="submit" id="add_artist" class="btn btn-primary btn-success"s>
+                        <span class="input-group-btn"><input type="button" name="submit" value="submit" id="add_artist" class="btn btn-primary btn-success"></span>
                         </div>
                 """),
                 'video',
