@@ -12,7 +12,7 @@ def active_page(request, view_name):
     if not request:
         return ""
     try:
-        return "active" if "{0}:{1}".format(path.namespace, path.url_name) == view_name else "f"
+        return "active" if path.url_name == view_name else ""
     except Resolver404:
         return ""
 
