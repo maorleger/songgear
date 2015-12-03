@@ -1,0 +1,68 @@
+{% extends "web/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    {% crispy form %}
+
+
+
+{% endblock content %}
+
+{% block pagescripts %}
+
+    <script type="application/javascript">
+        $("document").ready(function() {
+
+            $(".toggleButton").click(function(e) {
+                e.preventDefault();
+                var $div = $("#" + $(this).data("div-id"));
+
+                if ($div.is(":visible")) {
+                    $div.hide('slow');
+                } else {
+                    $div.show('slow');
+                }
+
+            });
+
+            $("#add_artist").click(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "{% url "web:new_artist_ajax" %}",
+                    data: $("#new_artist_div").find("> input").serialize()
+
+                }).done(function(event) {
+                    var $artistDropDown = $("#id_artist");
+                    var id = event["id"];
+                    var name = event["name"];
+                    if ($artistDropDown.find("option[value=" + id + "]").length == 0) {
+                         var newOption = $('<option value="'+id+'">'+name+'</option>');
+                        $artistDropDown.append(newOption);
+                    }
+                    $artistDropDown.find("option[value=" + id + "]").prop("selected", true);
+                });
+            }) ;
+
+            $("#add_genre").click(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "{% url "web:new_genre_ajax" %}",
+                    data: $("#new_genre_div").find("> input").serialize()
+                }).done(function(event) {
+                    var $genreDropDown = $("#id_genre");
+                    var id = event["id"];
+                    var name = event["name"];
+                    if ($genreDropDown.find("option[value=" + id + "]").length == 0) {
+                        var newOption = $('<option value="' + id + '">' + name + '</option>');
+                        $genreDropDown.append(newOption);
+                    }
+                    $genreDropDown.find("option[value=" + id + "]").prop("selected", true);
+                });
+            });
+        });
+
+    </script>
+
+{% endblock pagescripts %}

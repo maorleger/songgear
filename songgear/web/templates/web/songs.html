@@ -1,0 +1,55 @@
+{% extends "web/base.html" %}
+{% block content %}
+
+        <div class="table">
+            <table class="table table-striped data-table" >
+                <thead>
+                    <tr>
+                        <th>
+                            <a href="{% url 'web:new' %}"><span class="glyphicon glyphicon-plus"></span></a>
+                        </th>
+                        <th>
+                            Artist
+                        </th>
+                        <th>Genre</th>
+                        <th>Song</th>
+                        <th>Owner</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for song in song_list %}
+                        <tr>
+                            <td>
+                                <a href={% url 'web:detail' song.id %}>
+                                    <span class="glyphicon glyphicon-eye-open text-center" aria-hidden="false">
+                                    </span>
+                                </a>
+                                {% if song.create_user == request.user %}
+                                    <a href="{% url 'web:edit' song.id %}">
+                                        <span class="glyphicon glyphicon-pencil text-center">
+                                        </span>
+                                    </a>
+                                    <a href="{% url 'web:delete' song.id %}">
+                                        <span class="glyphicon glyphicon-remove text-center">
+
+                                        </span>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'web:copy' song.id %}">
+                                        <span class="glyphicon glyphicon-copy text-center"></span>
+                                    </a>
+                                {% endif %}
+                            </td>
+                            <td>{{ song.artist.name }}</td>
+                            <td>{{ song.genre.name }}</td>
+                            <td>{{ song.name }}</td>
+                            <td>{{ song.create_user.username }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+{% endblock content %}
+
