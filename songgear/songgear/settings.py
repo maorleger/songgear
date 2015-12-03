@@ -37,6 +37,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'web',
+    'embed_video',
+    'crispy_forms'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -117,3 +120,12 @@ STATICFILES_DIRS = (
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+
+# User management specific settings.
+# TODO: seems like they should live in the web app, but maybe the point is that one app manages users?
+LOGIN_REDIRECT_URL = 'web:index'
+
+LOGIN_URL = 'django.contrib.auth.views.login'
