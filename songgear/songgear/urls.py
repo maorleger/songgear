@@ -7,4 +7,5 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^/$', include(web_urls, namespace='web')),
     url(r'^/$', include('django.contrib.auth.urls')),
+                       
 )
