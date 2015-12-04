@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = "x9*4=dtv(n$re$s-u=+67&)-ot*26q6d8ft4ui(c41^nrat5=p"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = False
 
@@ -94,18 +94,10 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
- #
- # 'default': {
- #        'ENGINE': 'django.db.backends.postgresql_psycopg2',
- #        'NAME': 'songgear',
- #        'USER': 'mleger',
- #        'PASSWORD': 'postgres123',
- #        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
- #        'PORT': '',
- #    }
+
 
 # Parse database configuration from $DATABASE_URL
-DATABASES['default'] = dj_database_url.config(default="postgres://baauimaiaktptq:LitPH1kvEXNfDSD7I8PM5S8bau@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d9g7313skeerah")
+DATABASES['default'] = dj_database_url.config(default="postgres://papuebdcupdxvx:fLof91CHfZ79trtf3OYz3hL_xd@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d44f9c812ipin6")
 
 # Enable Connection Pooling (if desired)
 DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
