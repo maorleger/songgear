@@ -19,5 +19,5 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/delete_comment/(?P<comment>[0-9]+)', views.delete_comment, name='delete_comment'),
     url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^register/$', views.register, name='register'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/web/'}, name='logout'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}, name='logout'),
 ]

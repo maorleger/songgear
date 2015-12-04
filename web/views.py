@@ -180,5 +180,6 @@ def register(request):
             return HttpResponseRedirect(reverse('web:index'))
     else:
         form = RegisterForm()
+
     return render(request, 'registration/register.html', {'form': form})
 
