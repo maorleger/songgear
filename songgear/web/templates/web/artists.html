@@ -1,0 +1,40 @@
+{% extends "web/base.html" %}
+
+{% block content %}
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            <a href="{% url 'web:new_artist' %}"><span class="glyphicon glyphicon-plus"></span></a>
+                            Artist
+                        </th>
+                        <th>
+                            Songs by this artist
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for artist in artist_list %}
+                        <tr>
+                            <td>
+
+                                <a href="{% url 'web:edit_artist' artist.id %}">
+                                    <span class="glyphicon glyphicon-pencil text-center"></span>
+                                </a>
+                                {{ artist.name }}
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for song in artist.song_set.all %}
+                                        <li><a href="{% url 'web:detail' song.id %}">{{ song.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+{% endblock content %}

@@ -1,0 +1,73 @@
+/* overall spacing and positioning */
+
+body {
+
+    padding-top: 70px;
+}
+
+.row {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+
+/* navigation bar navbar */
+
+.navbar-custom {
+    background-color: #1d4a99;
+    color:#ffffff;
+    border-radius:0;
+}
+
+.navbar-custom .navbar-nav > li > a {
+    color:#fff;
+}
+.navbar-custom .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
+    color: #ffffff;
+    background-color:transparent;
+}
+.navbar-custom .navbar-brand {
+    color:#eeeeee;
+}
+
+.navbar-custom .navbar-nav>.active>a,
+.navbar-custom .navbar-nav>.active>a:hover {
+    background-color: #18356a;
+
+}
+
+
+.navbar-custom .navbar-brand:hover {
+    color: #444;
+}
+
+/*/!* striped table style *!/*/
+
+/*.table-striped>tbody>tr:nth-child(odd)>td,*/
+/*.table-striped>tbody>tr:nth-child(odd)>th {*/
+   /*background-color: #81b6b7;*/
+ /*}*/
+
+/*.table-striped>tbody>tr:nth-child(even)>td {*/
+    /*background-color: #a4e3e4;*/
+/*}*/
+
+.btn-success {
+    background-color: #1d4a99;
+    border-color: #18356a;
+}
+
+.btn-success:hover {
+    background-color: #18356a;
+    border-color: #13264b;
+}
+
+/* Comments */
+.panel-default > .panel-heading  {
+    background-color: #1d4a99;
+
+}
+
+.panel-default > .panel-heading > strong {
+    color: lightgrey;
+}
