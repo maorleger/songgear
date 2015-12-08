@@ -196,4 +196,7 @@ def reset_confirm(request, uidb64=None, token=None):
 def reset(request):
     return password_reset(request, template_name='registration/reset_form.html',
                           email_template_name='registration/reset_email.html',
-                          post_reset_redirect=reverse('web:login'))
+                          post_reset_redirect=reverse('web:reset_sent'))
+
+def reset_sent(request):
+    return render(request, 'registration/reset_form.html', {'success': True})

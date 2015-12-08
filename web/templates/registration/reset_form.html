@@ -2,10 +2,19 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    {{ form | crispy }}
-    <button type="submit" class="btn">Submit</button>
-</form>
+
+{% if success %}
+<div class="alert alert-success" role="alert">
+    If your email exists in our system, a password reset email will be sent to it.
+</div>
+{% else %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <button type="submit" class="btn">Submit</button>
+    </form>
+{% endif %}
+
 
 {% endblock content %}

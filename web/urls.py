@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}, name='logout'),
     url(r'^reset_confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', views.reset_confirm, name='reset_confirm'),
     url(r'^reset/$', views.reset, name='reset'),
+    url(r'^reset_sent/$', views.reset_sent, name='reset_sent')
 ]
