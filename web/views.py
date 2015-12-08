@@ -8,6 +8,8 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, JsonResponse
 from django.db.models import Q
 from django.utils.decorators import method_decorator
+from django.contrib.auth.views import password_reset, password_reset_confirm
+
 
 class LoggedInMixin(object):
     @method_decorator(login_required)
@@ -118,6 +120,7 @@ def new_artist(request):
         form = ArtistForm()
     return render(request, 'web/new.html', {'form': form})
 
+
 @login_required
 def new_artist_ajax(request):
     if request.method == 'POST':
@@ -144,6 +147,7 @@ def new_genre_ajax(request):
             genre = Genre.objects.create(name=genre_name)
 
         return JsonResponse({"id": genre.id, "name": genre.name})
+
 
 @login_required
 def artists(request):
@@ -183,3 +187,13 @@ def register(request):
 
     return render(request, 'registration/register.html', {'form': form})
 
+
+def reset_confirm(request, uidb64=None, token=None):
+    return password_reset_confirm(request, template_name='registration/reset_confirm.html', uidb64=uidb64, token=token,
+                                  post_reset_redirect=reverse('web:login'))
+
+
+def reset(request):
+    return password_reset(request, template_name='registration/reset_form.html',
+                          email_template_name='registration/reset_email.html',
+                          post_reset_redirect=reverse('web:login'))

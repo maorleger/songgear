@@ -7,6 +7,7 @@ from crispy_forms.layout import Submit, Layout, Fieldset, HTML
 from crispy_forms.helper import FormHelper
 
 
+
 class CommentForm(ModelForm):
 
     class Meta:
@@ -23,7 +24,7 @@ class ArtistForm(ModelForm):
             self.helper.form_action = reverse('web:edit_artist', args=(kwargs['instance'].id,))
         except KeyError:
             self.helper.form_action = reverse('web:new_artist')
-        self.helper.add_input(Submit('submit', 'submit', css_class='btn-success'))
+        self.helper.add_input(Submit('submit', 'submit', css_class='btn'))
     class Meta:
         model = Artist
         fields = ('name',)
@@ -44,7 +45,7 @@ class SongForm(ModelForm):
                 HTML("""<div id="new_genre_div" style="display:none;" class="input-group">
                         {% csrf_token %}
                         <input type="text" id="new_genre" name="new_genre" placeholder="Genre..." class="textinput textInput form-control" maxlength="200" />
-                        <span class="input-group-btn"><input type="button" name="submit" value="submit" id="add_genre" class="btn btn-primary btn-success"></span>
+                        <span class="input-group-btn"><input type="button" name="submit" value="submit" id="add_genre" class="btn btn-primary btn"></span>
                         </div>
                 """),
                 'name',
@@ -54,7 +55,7 @@ class SongForm(ModelForm):
                 HTML("""<div id="new_artist_div" style="display:none;" class="input-group">
                         {% csrf_token %}
                         <input type="text" id="new_artist" name="new_artist" placeholder="Artist name..." class="textinput textInput form-control" maxlength="200" />
-                        <span class="input-group-btn"><input type="button" name="submit" value="submit" id="add_artist" class="btn btn-primary btn-success"></span>
+                        <span class="input-group-btn"><input type="button" name="submit" value="submit" id="add_artist" class="btn btn-primary btn"></span>
                         </div>
                 """),
                 'video',
@@ -92,7 +93,7 @@ class RegisterForm(ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_action = reverse('web:register')
 
-        self.helper.add_input(Submit('register', 'Register!', css_class='btn-success'))
+        self.helper.add_input(Submit('register', 'Register!', css_class='btn'))
 
     class Meta:
         model = User

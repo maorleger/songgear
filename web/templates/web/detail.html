@@ -7,9 +7,9 @@
             {{ song.name }} by {{ song.artist }}
 
             {% if song.create_user == request.user %}
-                <a class="btn btn-success btn-lg pull-right" href="{% url 'web:edit' pk=song.id %}">Edit</a>
+                <a class="btn btn-lg pull-right" href="{% url 'web:edit' pk=song.id %}">Edit</a>
             {% else %}
-                <a class="btn btn-success btn-lg pull-right" href="{% url 'web:copy' pk=song.id %}">Copy</a>
+                <a class="btn btn-lg pull-right" href="{% url 'web:copy' pk=song.id %}">Copy</a>
             {% endif %}
         </h1>
      </div>
@@ -93,7 +93,7 @@
              {% csrf_token %}
              {{ form | crispy }}
 
-             <button type="submit"  class="btn btn-success">Submit</button>
+             <button type="submit"  class="btn ">Submit</button>
          </form>
 
     </span>

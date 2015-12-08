@@ -22,10 +22,18 @@ body {
 .navbar-custom .navbar-nav > li > a {
     color:#fff;
 }
+
+.navbar-custom .navbar-nav > li > a:hover {
+    background-color: #18356a;
+    border-color: #13264b;
+    color: #ffffff;
+}
+
 .navbar-custom .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
     color: #ffffff;
     background-color:transparent;
 }
+
 .navbar-custom .navbar-brand {
     color:#eeeeee;
 }
@@ -33,12 +41,13 @@ body {
 .navbar-custom .navbar-nav>.active>a,
 .navbar-custom .navbar-nav>.active>a:hover {
     background-color: #18356a;
-
+    color: white;
 }
 
 
 .navbar-custom .navbar-brand:hover {
-    color: #444;
+    color: white;
+    background-color: #18356a;
 }
 
 /*/!* striped table style *!/*/
@@ -52,14 +61,16 @@ body {
     /*background-color: #a4e3e4;*/
 /*}*/
 
-.btn-success {
+.btn {
     background-color: #1d4a99;
     border-color: #18356a;
+    color: white;
 }
 
-.btn-success:hover {
+.btn:hover {
     background-color: #18356a;
     border-color: #13264b;
+    color: white;
 }
 
 /* Comments */
