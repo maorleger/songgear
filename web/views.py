@@ -73,12 +73,12 @@ def copy(request, pk):
 def edit(request, pk):
     song = get_object_or_404(Song, pk=pk)
     if request.method == 'POST':
-        form = SongForm(request.POST, instance=song)
+        form = SongForm(request.user, request.POST, instance=song)
         if form.is_valid():
             song = form.save()
             return HttpResponseRedirect(reverse('web:detail', args=(song.id,)))
     else:
-        form = SongForm(instance=song)
+        form = SongForm(request.user, instance=song)
     return render(request, 'web/form.html', {'form': form, 'pk': pk})
 
 
@@ -98,14 +98,14 @@ def edit_artist(request, pk):
 @login_required
 def new(request):
     if request.method == 'POST':
-        form = SongForm(request.POST)
+        form = SongForm(request.user, request.POST)
         if form.is_valid():
             song = form.save(commit=False)
             song.create_user = request.user
             song.save()
             return HttpResponseRedirect(reverse('web:detail', args=(song.id,)))
     else:
-        form = SongForm()
+        form = SongForm(request.user)
     return render(request, 'web/form.html', {'form': form})
 
 

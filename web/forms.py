@@ -1,6 +1,6 @@
 from crispy_forms.bootstrap import FormActions, FieldWithButtons, StrictButton
 from django.core.urlresolvers import reverse
-from django.forms import ModelForm, BooleanField
+from django.forms import ModelForm, BooleanField, HiddenInput
 from .models import Song, Artist, Comment
 from django.contrib.auth.models import User
 from crispy_forms.layout import Submit, Layout, Fieldset, HTML
@@ -35,7 +35,7 @@ class SongForm(ModelForm):
 
     public = BooleanField(label="Allow other users to edit this song?")
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super(SongForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
@@ -74,8 +74,13 @@ class SongForm(ModelForm):
             )
         )
 
+
+
         try:
             self.helper.form_action = reverse('web:edit', args=(kwargs['instance'].id,))
+            # in this case we are editing a song
+            if kwargs['instance'].create_user != user:
+                self.fields['public'].widget = HiddenInput()
         except KeyError:
             self.helper.form_action = reverse('web:new')
 
