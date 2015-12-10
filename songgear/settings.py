@@ -95,9 +95,13 @@ USE_L10N = True
 USE_TZ = True
 
 
+if DEBUG:
+    defaultDB = "postgres://localhost/songgear"
+else:
+    defaultDB = "postgres://papuebdcupdxvx:fLof91CHfZ79trtf3OYz3hL_xd@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d44f9c812ipin6"
 
 # Parse database configuration from $DATABASE_URL
-DATABASES['default'] = dj_database_url.config(default="postgres://papuebdcupdxvx:fLof91CHfZ79trtf3OYz3hL_xd@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d44f9c812ipin6")
+DATABASES['default'] = dj_database_url.config(default=defaultDB)
 
 # Enable Connection Pooling (if desired)
 DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
