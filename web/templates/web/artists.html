@@ -28,7 +28,7 @@
                             <td>
                                 <ul>
                                     {% for song in artist.song_set.all %}
-                                        <li><a href="{% url 'web:detail' song.id %}">{{ song.name }}</a></li>
+                                        <li><a href="{% url 'web:detail' song.id %}">{{ song.name }}</a>  - owned by {{ song.create_user }}</li>
                                     {% endfor %}
                                 </ul>
                             </td>
