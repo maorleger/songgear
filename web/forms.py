@@ -1,6 +1,6 @@
 from crispy_forms.bootstrap import FormActions, FieldWithButtons, StrictButton
 from django.core.urlresolvers import reverse
-from django.forms import ModelForm, Form, CharField
+from django.forms import ModelForm, BooleanField
 from .models import Song, Artist, Comment
 from django.contrib.auth.models import User
 from crispy_forms.layout import Submit, Layout, Fieldset, HTML
@@ -33,6 +33,8 @@ class ArtistForm(ModelForm):
 
 class SongForm(ModelForm):
 
+    public = BooleanField(label="Allow other users to edit this song?")
+
     def __init__(self, *args, **kwargs):
         super(SongForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -41,6 +43,7 @@ class SongForm(ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 '',
+                'public',
                 FieldWithButtons ('genre', StrictButton("Add new", name="toggle_new_genre", css_class="toggleButton", data_div_id="new_genre_div")),
                 HTML("""<div id="new_genre_div" style="display:none;" class="input-group">
                         {% csrf_token %}
@@ -64,6 +67,7 @@ class SongForm(ModelForm):
                 'chords_url',
                 'tabs_text',
                 'tabs_url',
+
             ),
             FormActions(
                 Submit("submit", "submit")
@@ -78,7 +82,7 @@ class SongForm(ModelForm):
 
     class Meta:
         model = Song
-        fields = ('genre', 'name', 'artist', 'video', 'lesson_video', 'chords_text', 'chords_url', 'tabs_text', 'tabs_url')
+        fields = ('genre', 'name', 'artist', 'public', 'video', 'lesson_video', 'chords_text', 'chords_url', 'tabs_text', 'tabs_url')
 
 
 class RegisterForm(ModelForm):

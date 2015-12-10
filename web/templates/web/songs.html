@@ -14,6 +14,7 @@
                         <th>Genre</th>
                         <th>Song</th>
                         <th>Owner</th>
+                        <th>Public</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -24,11 +25,14 @@
                                     <span class="glyphicon glyphicon-eye-open text-center" aria-hidden="false">
                                     </span>
                                 </a>
-                                {% if song.create_user == request.user %}
+                                {% if song.create_user == request.user or song.public %}
                                     <a href="{% url 'web:edit' song.id %}">
                                         <span class="glyphicon glyphicon-pencil text-center">
                                         </span>
                                     </a>
+
+                                {% endif %}
+                                {% if song.create_user == request.user %}
                                     <a href="{% url 'web:delete' song.id %}">
                                         <span class="glyphicon glyphicon-remove text-center">
 
@@ -44,6 +48,7 @@
                             <td>{{ song.genre.name }}</td>
                             <td>{{ song.name }}</td>
                             <td>{{ song.create_user.username }}</td>
+                            <td>{{ song.public | yesno:"Yes,No" }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

@@ -29,7 +29,7 @@ class Song(models.Model):
     update_date = models.DateTimeField(auto_now=True)
     create_user = models.ForeignKey(User, blank=False, null=False)
     genre = models.ForeignKey(Genre, blank=True, null=True)
-
+    public = models.BooleanField(default=False)
 
     def __str__(self):
         return "{0} by {1}".format(self.name, self.artist.name)
