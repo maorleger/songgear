@@ -33,7 +33,7 @@ class ArtistForm(ModelForm):
 
 class SongForm(ModelForm):
 
-    public = BooleanField(label="Allow other users to edit this song?")
+    public = BooleanField(label="Allow other users to edit this song?", required=False)
 
     def __init__(self, user, *args, **kwargs):
         super(SongForm, self).__init__(*args, **kwargs)
