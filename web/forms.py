@@ -1,4 +1,5 @@
 from crispy_forms.bootstrap import FormActions, FieldWithButtons, StrictButton
+from django import forms
 from django.core.urlresolvers import reverse
 from django.forms import ModelForm, BooleanField, HiddenInput
 from .models import Song, Artist, Comment
@@ -97,7 +98,7 @@ class RegisterForm(ModelForm):
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
         self.fields['email'].required = True
-
+        self.fields['password'] = forms.CharField(widget=forms.PasswordInput)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.form_action = reverse('web:register')
@@ -111,6 +112,17 @@ class RegisterForm(ModelForm):
     def save(self, commit=True):
         user = super(RegisterForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password"])
+        user.email = self.cleaned_data["email"]
         if commit:
+            user.is_active = False
             user.save()
         return user
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        try:
+            User._default_manager.get(email=email)
+        except User.DoesNotExist:
+            return email
+        raise forms.ValidationError('duplicate email')
+

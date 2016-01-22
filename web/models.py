@@ -1,6 +1,10 @@
+import datetime
+
+import django
 from django.contrib.auth.models import User
 from django.db import models
 from embed_video.fields import EmbedVideoField
+
 
 
 class Artist(models.Model):
@@ -46,3 +50,15 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.comment
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    activation_key = models.CharField(max_length=40, blank=True)
+    key_expires = models.DateTimeField(default=django.utils.timezone.now)
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name_plural=u'User profiles'

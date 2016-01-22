@@ -1,0 +1,7 @@
+{% extends "web/base.html" %}
+{% block content %}
+    <div class="alert alert-success" role="alert">
+        Welcome to SongGear! Your email has been confirmed and you may now enjoy our site.
+    </div>
+    <div class="text-center"><a href="{% url "web:login" %}" class="btn">Login</a></div>
+{% endblock content %}

@@ -1,14 +1,16 @@
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
-from .models import Song, Artist, Comment, Genre
+from .models import Song, Artist, Comment, Genre, UserProfile
 from .forms import SongForm, RegisterForm, ArtistForm, CommentForm
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, JsonResponse
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.contrib.auth.views import password_reset, password_reset_confirm
+from django.core.mail import send_mail, EmailMessage
+import hashlib, random, datetime
+from django.contrib.auth.models import User
 
 
 class LoggedInMixin(object):
@@ -174,19 +176,55 @@ def songs(request):
     return render(request, 'web/songs.html', {'song_list': songs})
 
 
+
+
 def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
+
         if form.is_valid():
             user = form.save()
-            user = authenticate(username=request.POST['username'], password=request.POST['password'])
-            login(request, user)
-            return HttpResponseRedirect(reverse('web:index'))
+
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+
+            # create a unique activation key
+            salt = hashlib.sha1(str(random.random()).encode('utf-8')).hexdigest()[:5]
+            activation_key = hashlib.sha1(str(salt+email).encode('utf-8')).hexdigest()
+
+            # get the user from db and create a new user profile with activation key
+            user = User.objects.get(username=username)
+            new_profile = UserProfile(user=user, activation_key=activation_key)
+            new_profile.save()
+
+            # send email with activation key
+            email_subject = 'Account confirmation'
+            email_body = "Hey {0}, thanks for signing up with SongGear! To activate your account, click this link: {1}".format(username, request.build_absolute_uri(reverse("web:confirm", args=(activation_key,))))
+
+            email = EmailMessage(subject=email_subject, body=email_body, to=[email])
+            email.send(fail_silently=False)
+
+            return HttpResponseRedirect(reverse('web:register_success'))
+
     else:
         form = RegisterForm()
 
     return render(request, 'registration/register.html', {'form': form})
 
+def register_confirm(request, activation_key):
+    # check if logged in and if so redirect to home
+    if request.user.is_authenticated():
+        HttpResponseRedirect(reverse('web:index'))
+
+    # check if a user profile matches activation key
+    user_profile = get_object_or_404(UserProfile, activation_key=activation_key)
+
+
+    # save user, set to active, and render some template
+    user = user_profile.user
+    user.is_active = True
+    user.save()
+    return render(request, 'registration/email_verified.html')
 
 def reset_confirm(request, uidb64=None, token=None):
     return password_reset_confirm(request, template_name='registration/reset_confirm.html', uidb64=uidb64, token=token,
@@ -200,3 +238,7 @@ def reset(request):
 
 def reset_sent(request):
     return render(request, 'registration/reset_form.html', {'success': True})
+
+
+def register_success(request):
+    return render(request, 'registration/registration_success.html')
