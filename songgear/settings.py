@@ -24,7 +24,7 @@ with open('secret.txt', 'r') as f:
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = False
 
@@ -40,7 +40,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'web',
     'embed_video',
-    'crispy_forms'
+    'crispy_forms',
+    'rest_framework'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -131,6 +132,12 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissions'
+    ]
+}
 
 # User management specific settings.
 # TODO: seems like they should live in the web app, but maybe the point is that one app manages users?
